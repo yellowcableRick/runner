@@ -1,9 +1,9 @@
-#!/bin/usr/env bash
+#!/usr/bin/env bash
 #  @runner.yc
 #  ZSH script to run ordered scripts from a folder
 #
 #  @license Yellow Cable (See LICENCE)
-#  @version 1.0
+#  @version 1.1
 #  @author Rick Pennings // info@yellowcable.nl
 #  @updated 2023-04-17
 #  @link http://yellowcable.nl
