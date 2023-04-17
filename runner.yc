@@ -1,0 +1,62 @@
+#!/bin/usr/env bash
+#  @runner.yc
+#  ZSH script to run ordered scripts from a folder
+#
+#  @license Yellow Cable (See LICENCE)
+#  @version 1.0
+#  @author Rick Pennings // info@yellowcable.nl
+#  @updated 2023-04-17
+#  @link http://yellowcable.nl
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Methods and variables needed for any run script called.
+# ----------------------------------------------------------------------------------------------------------------------
+SCRIPT_PATH="$(cd -- "$(dirname "$0")" || exit 1; pwd -P)" # Set script path global in run file
+projectDir() {
+  echo "${SCRIPT_PATH%/setup*}"
+}
+numberedFiles() {
+  ls -d $1/* | grep "[0-9]_" | sort
+}
+runTheNumbers() {
+for i in $1
+  do
+    # Check if the file is a bash (shell) script or php script
+    local EXT; EXT=${i##*.}
+    if [ "$EXT" == "sh" ] || [ "$EXT" == "php" ]
+    then
+      local ACTION; ACTION=$(basename $i); ACTION=${ACTION#*_}; ACTION=${ACTION%.*}
+      echo -ne "------ Running $2 \t $ACTION "
+      cd "$(projectDir)" || exit 1
+      case $EXT in
+        sh)   source "$i" $3
+              ;;
+        php)  php "$i" $3
+              ;;
+      esac
+      if [[ $? == 0 ]]
+      then
+          echo -e "[\033[0;32mOK\033[0m]"
+      else
+          echo -e "[\033[0;31mFAILED\033[0m]"
+          exit 1
+      fi
+    fi
+  done
+}
+getFirstParameter() {
+  local OPTIND
+  local amountOfOptions=1
+  while getopts "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" unused; do (( amountOfOptions++ )); done
+  echo $amountOfOptions;
+}
+# ----------------------------------------------------------------------------------------------------------------------
+# Run prerequisites directory
+# ----------------------------------------------------------------------------------------------------------------------
+runTheNumbers "$(numberedFiles "$SCRIPT_PATH/_prerequisites")" "Prerequisite"
+echo "----------------------------------------------------------------------"
+# ----------------------------------------------------------------------------------------------------------------------
+# Run script collection using first parameter after flags
+# ----------------------------------------------------------------------------------------------------------------------
+amountOfOptions=$(getFirstParameter "$@")
+runTheNumbers "$(numberedFiles "$SCRIPT_PATH/${!amountOfOptions}")" "${!amountOfOptions}" "$*"
