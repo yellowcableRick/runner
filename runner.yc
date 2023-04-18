@@ -13,7 +13,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 SCRIPT_PATH="$(cd -- "$(dirname "$0")" || exit 1; pwd -P)" # Set script path global in run file
 projectDir() {
-  echo "${SCRIPT_PATH%/setup*}"
+  echo "${SCRIPT_PATH%/bin*}"
 }
 numberedFiles() {
   ls -d $1/* | grep "[0-9]_" | sort
