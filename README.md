@@ -32,7 +32,7 @@ done
 ```
 
 ## Contribute
-Contributions are always welcome!
+Contributions are always welcome! Suggestions are only welcome in the form of code.
 
 ## License
 
