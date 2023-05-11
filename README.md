@@ -4,8 +4,11 @@
 ## Goal of the project is to prevent long bash scripts. 
 - Just create a subfolder in the runner directory.
 - Create either .sh or .php files with a numbered prefix in the name.
-- Let the file return 0 for a positive outcome, or 1 for a negative outcome.
-- Any file that's neccesary but should not be executed must not contain a number in prefix.
+- Let the file return 
+  - 0 for a positive outcome
+  - 1 for a warning outcome
+  - 2 or greater for a failed outcome
+- Any file that's necessary but should not be executed must not contain a number in prefix.
 
 ## Common script parts (shared across all scripts)
 - The _prerequisites folder can be used to add additional script parts which should be run before any other foldered script.
@@ -16,19 +19,11 @@ To execute the directory filled with scripts, just run:
 runner.yc [DIRNAME]
 ```
 
-Aditional parameters and flags are supported. For example:
-```
-while getopts "d" opt $@
-do
-  # echo "Parsing option $opt ..."
-  case $opt in
-    d)	DEMO="true"
-        ;;
-    *)  echo "flag $opt is not allowed"
-        ;;
-  esac
-done
+Additional parameters and flags are supported. For example:
 
+```
+runner.yc -d example // Will give a warning in the getopts check
+runner.yc -1 example // Will give an error in the getopts check
 ```
 
 ## Contribute

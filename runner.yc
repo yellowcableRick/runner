@@ -3,7 +3,7 @@
 #  Bash script to run ordered scripts from a folder
 #
 #  @license Yellow Cable (See LICENCE)
-#  @version 1.3
+#  @version 1.4
 #  @author Rick Pennings // info@yellowcable.nl
 #  @updated 2023-04-17
 #  @link http://yellowcable.nl
@@ -12,12 +12,12 @@
 # Methods and variables needed for any run script called.
 # ----------------------------------------------------------------------------------------------------------------------
 getRunnerPath() {
-  echo $(cd -- "$(dirname "$0")" || exit 1; pwd -P)
+  echo "$(cd -- "$(dirname "$0")" || exit 1; pwd -P)"
 }
 
 getScriptPath() {
   case $1 in
-    /*) echo $1 ;;
+    /*) echo "$1" ;;
     *) echo "$(getRunnerPath)/$1" ;;
   esac
 }
@@ -25,23 +25,22 @@ getScriptPath() {
 getFirstParameter() {
   local OPTIND
   local amountOfOptions=1
-  local FIRSTARG
 
   while getopts "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" unused; do
     (( amountOfOptions++ ))
   done
 
-  echo ${!amountOfOptions};
+  echo "${!amountOfOptions}";
 }
 
 getContents() {
-  ls -d $1/* | grep "[0-9].*_" | sort
+  ls -d "$1"/* | grep "[0-9].*_" | sort
 }
 
 runTheNumbers() {
 for i in $1
   do
-    if [ -f $i ]; then
+    if [ -f "$i" ]; then
       # Check if the file is a bash (shell) script or php script
       local EXT; EXT=${i##*.}
       if [ "$EXT" == "sh" ] || [ "$EXT" == "php" ]; then
@@ -49,16 +48,16 @@ for i in $1
         local ACTION
 
         SCRIPT=$(printf '%-30s' "$2")
-        ACTION=$(basename $i)
+        ACTION=$(basename "$i")
         ACTION=${ACTION#*_}
         ACTION=${ACTION%.*}
         ACTION=$(printf '%-30s' "$ACTION")
 
         echo -ne "$SCRIPT $ACTION "
         case $EXT in
-          sh)   source "$i" $3
+          sh)   source "$i" "$3"
                 ;;
-          php)  php "$i" $3
+          php)  php "$i" "$3"
                 ;;
         esac
         case $? in
@@ -70,9 +69,9 @@ for i in $1
               ;;
         esac
       fi
-    elif [ -d $i ]; then
-      local dir=$(basename $i)
-      runTheNumbers "$(getContents "$i")" "$2/${dir##*_}"
+    elif [ -d "$i" ]; then
+      local DIR; DIR=$(basename "$i")
+      runTheNumbers "$(getContents "$i")" "$2/${DIR##*_}"
     else
       echo -e "[\033[0;31mFAILED\033[0m]"
       >&2 echo "[ERROR] runner.yc halted. Found object which can't be parsed.: "$i
@@ -90,4 +89,4 @@ fi
 # ----------------------------------------------------------------------------------------------------------------------
 # Run script collection using first parameter after flags
 # ----------------------------------------------------------------------------------------------------------------------
-runTheNumbers "$(getContents $(getScriptPath $(getFirstParameter $@)))" "$(getFirstParameter $@)" "$*"
+runTheNumbers "$(getContents "$(getScriptPath "$(getFirstParameter "$@")")")" "$(getFirstParameter "$@")" "$*"
