@@ -55,9 +55,9 @@ for i in $1
 
         echo -ne "$SCRIPT $ACTION "
         case $EXT in
-          sh)   source "$i" "$3"
+          sh)   source "$i" $3
                 ;;
-          php)  php "$i" "$3"
+          php)  php "$i" $3
                 ;;
         esac
         case $? in
