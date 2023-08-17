@@ -11,7 +11,5 @@
       "email": "info@yellowcable.nl"
     }
   ],
-  "bin": {
-    ["runner.yc"]
-  }
+  "bin": ["runner.yc"]
 }
