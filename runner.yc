@@ -16,10 +16,16 @@ getRunnerPath() {
 }
 
 getScriptPath() {
-  case $1 in
-    /*) echo "$1" ;;
-    *) echo "$(getRunnerPath)/$1" ;;
-  esac
+  if [ -d $(getFirstParameter $@) ]; then
+    case $(getFirstParameter $@) in
+      /*) echo "$(getFirstParameter $@)" ;;
+      *) realpath $(getFirstParameter $@) ;;
+    esac
+  else
+    if [ -d $(getRunnerPath)/$1 ]; then
+      echo "$(getRunnerPath)/$1"
+    fi
+  fi
 }
 
 getFirstParameter() {
@@ -83,10 +89,12 @@ for i in $1
 # ----------------------------------------------------------------------------------------------------------------------
 # Run prerequisites directory
 # ----------------------------------------------------------------------------------------------------------------------
-if [ -d "$(getRunnerPath)/_prerequisites" ]; then
-  runTheNumbers "$(getContents "$(getRunnerPath)/_prerequisites")" "prerequisites"
+if [ -d $(getScriptPath $@)/../_prerequisites ]; then
+  runTheNumbers "$(getContents "$(getScriptPath $@)/../_prerequisites")" "prerequisites"
 fi
 # ----------------------------------------------------------------------------------------------------------------------
 # Run script collection using first parameter after flags
 # ----------------------------------------------------------------------------------------------------------------------
-runTheNumbers "$(getContents "$(getScriptPath "$(getFirstParameter "$@")")")" "$(getFirstParameter "$@")" "$*"
+if [ -d $(getScriptPath $@) ]; then
+  runTheNumbers "$(getContents "$(getScriptPath $@)")" "$(getFirstParameter "$@")" "$*"
+fi
