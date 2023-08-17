@@ -10,7 +10,7 @@
       "name": "Rick Pennings",
       "email": "info@yellowcable.nl"
     }
-  ]
+  ],
   "bin": {
     ["runner.yc"]
   }
