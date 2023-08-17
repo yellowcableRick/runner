@@ -1,0 +1,17 @@
+{
+  "name": "yellowcable/runner",
+  "description": "Bash script which can run contents of subfolders in numbered order.",
+  "homepage": "https://yellowcable.nl",
+  "version": "1.0.0",
+  "type": "application",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Rick Pennings",
+      "email": "info@yellowcable.nl"
+    }
+  ]
+  "bin": {
+    ["runner.yc"]
+  }
+}
