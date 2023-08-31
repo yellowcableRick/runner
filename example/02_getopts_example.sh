@@ -3,9 +3,9 @@ while getopts "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" o
 do
   # echo "Parsing option $opt ..."
   case $opt in
-    d)	return 1
+    d)	return 2
         ;;
-    *)  return 2
+    *)  return 1
         ;;
   esac
 done

@@ -2,7 +2,7 @@
   "name": "yellowcable/runner",
   "description": "Bash script which can run contents of subfolders in numbered order.",
   "homepage": "https://yellowcable.nl",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "application",
   "license": "proprietary",
   "authors": [
