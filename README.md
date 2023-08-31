@@ -26,6 +26,12 @@ runner.yc -d example // Will give a warning in the getopts check
 runner.yc -1 example // Will give an error in the getopts check
 ```
 
+## Test
+To run the test with the expected parameters for the example:
+```
+runner.yc -v example parameter1 "string param2"
+```
+
 ## Contribute
 Contributions are always welcome! Suggestions are only welcome in the form of code.
 
