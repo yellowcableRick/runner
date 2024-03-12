@@ -5,8 +5,8 @@ do
   case $opt in
     d)	return 2
         ;;
-    *)  return 1
+    *)  return 0
         ;;
   esac
 done
-return 0
+return 1
